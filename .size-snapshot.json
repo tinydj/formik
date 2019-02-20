@@ -32,5 +32,15 @@
         "code": 3661
       }
     }
+  },
+  "./dist/@tinydj/formik.cjs.production.js": {
+    "bundled": 43495,
+    "minified": 21912,
+    "gzipped": 5488
+  },
+  "./dist/@tinydj/formik.cjs.development.js": {
+    "bundled": 44383,
+    "minified": 22795,
+    "gzipped": 5826
   }
 }
