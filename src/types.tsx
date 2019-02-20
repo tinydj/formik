@@ -67,7 +67,7 @@ export interface FormikComputedProps<Values> {
  */
 export interface FormikActions<Values> {
   /** Manually set top level status. */
-  setStatus(status?: any): void;
+  setStatus(status?: any, merge?: boolean): void;
   /**
    * Manually set top level error
    * @deprecated since 0.8.0
@@ -81,6 +81,12 @@ export interface FormikActions<Values> {
   setTouched(touched: FormikTouched<Values>): void;
   /** Manually set values object  */
   setValues(values: Values): void;
+  /** Reset form field directly */
+  resetField(
+    field: keyof Values & string,
+    resetTouched?: boolean,
+    shouldValidate?: boolean
+  ): void;
   /** Set value of form field directly */
   setFieldValue(
     field: keyof Values & string,
@@ -102,7 +108,7 @@ export interface FormikActions<Values> {
   /** Reset form */
   resetForm(nextValues?: Values): void;
   /** Submit the form imperatively */
-  submitForm(): void;
+  submitForm(eventOrObj?: any): void;
   /** Set Formik state, careful! */
   setFormikState<K extends keyof FormikState<Values>>(
     f: (
@@ -115,6 +121,8 @@ export interface FormikActions<Values> {
 
 /** Overloded methods / types */
 export interface FormikActions<Values> {
+  /** Reset form field directly */
+  resetField(field: string): void;
   /** Set value of form field directly */
   setFieldValue(field: string, value: any): void;
   /** Set error message of a form field directly */
@@ -204,7 +212,11 @@ export interface FormikConfig<Values> extends FormikSharedConfig {
   /**
    * Submission handler
    */
-  onSubmit: (values: Values, formikActions: FormikActions<Values>) => void;
+  onSubmit: (
+    values: Values,
+    formikActions: FormikActions<Values>,
+    eventOrObj?: any
+  ) => void;
   /**
    * A Yup Schema or a function that returns a Yup schema
    */
