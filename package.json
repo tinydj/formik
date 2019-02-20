@@ -1,10 +1,13 @@
 {
-  "name": "formik",
+  "name": "@tinydj/formik",
   "description": "Forms in React, without tears",
   "version": "1.5.1",
   "license": "MIT",
   "author": "Jared Palmer <jared@palmer.net>",
-  "repository": "jaredpalmer/formik",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tinydj/formik.git"
+  },
   "keywords": [
     "formik",
     "react",
@@ -146,5 +149,14 @@
       "path": "./dist/formik.umd.production.js",
       "limit": "14 kB"
     }
-  ]
+  ],
+  "bugs": {
+    "url": "https://github.com/tinydj/formik/issues"
+  },
+  "homepage": "https://github.com/tinydj/formik#readme",
+  "directories": {
+    "doc": "docs",
+    "example": "examples",
+    "test": "test"
+  }
 }
