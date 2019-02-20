@@ -38,7 +38,11 @@ export interface WithFormikConfig<
   /**
    * Submission handler
    */
-  handleSubmit: (values: Values, formikBag: FormikBag<Props, Values>) => void;
+  handleSubmit: (
+    values: Values,
+    formikBag: FormikBag<Props, Values>,
+    eventOrObj?: any
+  ) => void;
 
   /**
    * Map props to the form values
@@ -129,11 +133,19 @@ export function withFormik<
           : config.validationSchema;
       };
 
-      handleSubmit = (values: Values, actions: FormikActions<Values>) => {
-        return config.handleSubmit(values, {
-          ...actions,
-          props: this.props,
-        });
+      handleSubmit = (
+        values: Values,
+        actions: FormikActions<Values>,
+        eventOrObj?: any
+      ) => {
+        return config.handleSubmit(
+          values,
+          {
+            ...actions,
+            props: this.props,
+          },
+          eventOrObj
+        );
       };
 
       /**
