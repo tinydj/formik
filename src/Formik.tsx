@@ -400,6 +400,34 @@ export class Formik<Values = FormikValues> extends React.Component<
     }
   };
 
+  resetField = (
+    field: string,
+    resetTouched: boolean = true,
+    shouldValidate: boolean = true
+  ) => {
+    if (this.didMount) {
+      // Set form field by name
+      this.setState(
+        prevState => ({
+          ...prevState,
+          ...(resetTouched
+            ? { touched: setIn(prevState.touched, field, false) }
+            : {}),
+          values: setIn(
+            prevState.values,
+            field,
+            getIn(this.initialValues, field)
+          ),
+        }),
+        () => {
+          if (this.props.validateOnChange && shouldValidate) {
+            this.runValidations(this.state.values);
+          }
+        }
+      );
+    }
+  };
+
   handleSubmit = (e: React.FormEvent<HTMLFormElement> | undefined) => {
     if (e && e.preventDefault) {
       e.preventDefault();
@@ -429,10 +457,10 @@ export class Formik<Values = FormikValues> extends React.Component<
       }
     }
 
-    this.submitForm();
+    this.submitForm(e);
   };
 
-  submitForm = () => {
+  submitForm = (eventOrObj?: any) => {
     // Recursively set all values to `true`.
     this.setState(prevState => ({
       touched: setNestedObjectValues<FormikTouched<Values>>(
@@ -450,7 +478,7 @@ export class Formik<Values = FormikValues> extends React.Component<
       }
       const isValid = Object.keys(combinedErrors).length === 0;
       if (isValid) {
-        this.executeSubmit();
+        this.executeSubmit(eventOrObj);
       } else if (this.didMount) {
         // ^^^ Make sure Formik is still mounted before calling setState
         this.setState({ isSubmitting: false });
@@ -458,8 +486,8 @@ export class Formik<Values = FormikValues> extends React.Component<
     });
   };
 
-  executeSubmit = () => {
-    this.props.onSubmit(this.state.values, this.getFormikActions());
+  executeSubmit = (eventOrObj?: any) => {
+    this.props.onSubmit(this.state.values, this.getFormikActions(), eventOrObj);
   };
 
   handleBlur = (eventOrString: any): void | ((e: any) => void) => {
@@ -575,6 +603,7 @@ export class Formik<Values = FormikValues> extends React.Component<
   getFormikActions = (): FormikActions<Values> => {
     return {
       resetForm: this.resetForm,
+      resetField: this.resetField,
       submitForm: this.submitForm,
       validateForm: this.validateForm,
       validateField: this.validateField,
